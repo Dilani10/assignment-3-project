@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
-import { AppState, User, Preferences, OptimizationType, PriceData, SelectedItem } from '../types';
+import { AppState, User, Preferences, OptimizationType } from '../types';
 import { generatePrices, getOptimizedItems } from '../utils/pricing';
 import { apiService } from '../services/api';
 

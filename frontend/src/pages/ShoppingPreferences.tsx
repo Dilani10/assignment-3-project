@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageLayout from '../components/PageLayout';
 import FormSection from '../components/FormSection';
-import InputField from '../components/InputField';
 import LocationAutocomplete from '../components/LocationAutocomplete';
 import Button from '../components/Button';
 import { useAppContext } from '../context/AppContext';
