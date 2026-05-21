@@ -40,13 +40,15 @@ const Confirmation: React.FC = () => {
   };
 
   const handleSave = async () => {
-    // In a real app, this would save to a database
-    await completeConfirmation();
+    // Show popup immediately for instant feedback
     alert('Your optimised basket has been saved!');
+    // Save to database in background (non-blocking)
+    completeConfirmation();
   };
 
   const handleStartNew = () => {
-    completeConfirmation();
+    // Don't call completeConfirmation() here - it was already called in handleSave
+    // This prevents duplicate saves to the database
     resetApp();
     navigate('/preferences');
   };

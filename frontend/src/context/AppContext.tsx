@@ -258,32 +258,36 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const completeConfirmation = useCallback(async () => {
     setWorkflowProgress(prev => ({ ...prev, confirmationCompleted: true }));
     
-    // Save final basket data to database
+    // Save final basket data to database in background (non-blocking)
+    // This allows navigation to happen immediately without waiting for DB operations
     if (accessToken && shoppingId) {
-      try {
-        const totalBasketCost = state.selectedItems.reduce((sum, item) => sum + item.price, 0);
-        const estimatedSavings = state.preferences.weeklyBudget - totalBasketCost;
-        
-        await apiService.updateShopping(accessToken, shoppingId, {
-          total_basket_cost: totalBasketCost,
-          estimated_savings: estimatedSavings > 0 ? estimatedSavings : 0
-        });
-        console.log('Final basket saved:', { totalBasketCost, estimatedSavings });
-        
-        // Update grocery items with prices
-        if (state.selectedItems.length > 0) {
-          const itemsWithPrices = state.selectedItems.map(item => ({
-            item_name: item.name,
-            aldi_price: state.prices[item.name]?.aldi || 0,
-            coles_price: state.prices[item.name]?.coles || 0,
-            woolworths_price: state.prices[item.name]?.woolworths || 0,
-            highlighted_store: item.store
-          }));
-          await apiService.addGroceryItems(accessToken, shoppingId, itemsWithPrices);
+      // Run database operations in background without awaiting
+      (async () => {
+        try {
+          const totalBasketCost = state.selectedItems.reduce((sum, item) => sum + item.price, 0);
+          const estimatedSavings = state.preferences.weeklyBudget - totalBasketCost;
+          
+          await apiService.updateShopping(accessToken, shoppingId, {
+            total_basket_cost: totalBasketCost,
+            estimated_savings: estimatedSavings > 0 ? estimatedSavings : 0
+          });
+          console.log('Final basket saved:', { totalBasketCost, estimatedSavings });
+          
+          // Update grocery items with prices
+          if (state.selectedItems.length > 0) {
+            const itemsWithPrices = state.selectedItems.map(item => ({
+              item_name: item.name,
+              aldi_price: state.prices[item.name]?.aldi || 0,
+              coles_price: state.prices[item.name]?.coles || 0,
+              woolworths_price: state.prices[item.name]?.woolworths || 0,
+              highlighted_store: item.store
+            }));
+            await apiService.addGroceryItems(accessToken, shoppingId, itemsWithPrices);
+          }
+        } catch (error) {
+          console.error('Failed to save final basket:', error);
         }
-      } catch (error) {
-        console.error('Failed to save final basket:', error);
-      }
+      })();
     }
   }, [accessToken, shoppingId, state.selectedItems, state.preferences.weeklyBudget, state.prices]);
 
