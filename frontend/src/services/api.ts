@@ -6,7 +6,7 @@
  * In production, tokens should be verified properly with JWKS and proper JWT validation.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
 
 export interface AuthResponse {
   message: string;
