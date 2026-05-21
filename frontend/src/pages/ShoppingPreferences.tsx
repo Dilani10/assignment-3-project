@@ -44,9 +44,11 @@ const ShoppingPreferences: React.FC = () => {
     e.preventDefault();
     
     if (validateForm()) {
-      await setPreferences({ weeklyBudget, duration, location, locationAddress });
+      // Navigate immediately for instant response
       completePreferences();
       navigate('/grocery-list');
+      // Save preferences in background (non-blocking)
+      setPreferences({ weeklyBudget, duration, location, locationAddress });
     }
   };
 

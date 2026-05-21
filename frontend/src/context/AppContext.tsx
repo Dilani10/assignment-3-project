@@ -73,7 +73,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setState(prev => ({ ...prev, preferences }));
     
     // Save to database if user is authenticated
-    if (accessToken) {
+    // Only create shopping instance if one doesn't already exist for this session
+    if (accessToken && !shoppingId) {
       try {
         const response = await apiService.createShopping(accessToken, {
           weekly_budget: preferences.weeklyBudget,
@@ -86,7 +87,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         console.error('Failed to create shopping instance:', error);
       }
     }
-  }, [accessToken]);
+  }, [accessToken, shoppingId]);
 
   /**
    * Add a grocery item to the list

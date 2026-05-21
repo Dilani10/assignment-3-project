@@ -54,7 +54,8 @@ const BasketOptimiser: React.FC = () => {
 
   const handleContinue = async () => {
     setOptimizationType(selectedOption);
-    await completeBasketOptimiser(selectedOption);
+    // Navigate immediately for instant response
+    completeBasketOptimiser(selectedOption);
     navigate('/price-comparison');
   };
 

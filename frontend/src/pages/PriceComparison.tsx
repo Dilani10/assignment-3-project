@@ -71,6 +71,7 @@ const PriceComparison: React.FC = () => {
   }, [storeTotals]);
 
   const handleContinue = () => {
+    // Navigate immediately for instant response
     completePriceComparison();
     navigate('/confirmation');
   };

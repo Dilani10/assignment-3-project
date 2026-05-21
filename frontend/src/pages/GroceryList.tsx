@@ -74,8 +74,9 @@ const GroceryList: React.FC = () => {
   const handleContinue = async () => {
     // Defensive check: ensure groceryItems is an array and has items
     if (Array.isArray(groceryItems) && groceryItems.length > 0) {
+      // Navigate immediately for instant response
       generatePrices();
-      await completeGroceryList();
+      completeGroceryList();
       navigate('/basket-optimiser');
     }
   };
