@@ -7,24 +7,7 @@
     <title>OPTIMISED - Smart Grocery Shopping</title>
     <!-- Google Maps JavaScript API with Places Library -->
     <!-- Note: Replace YOUR_API_KEY with your actual Google Maps API key -->
-    <script>
-      // Load Google Maps API with error handling
-      (function() {
-        const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-        if (apiKey && apiKey !== 'your_google_maps_api_key_here') {
-          const script = document.createElement('script');
-          script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
-          script.async = true;
-          script.defer = true;
-          script.onerror = function() {
-            console.warn('Failed to load Google Maps API. Address autocomplete will be unavailable.');
-          };
-          document.head.appendChild(script);
-        } else {
-          console.warn('Google Maps API key not configured. Address autocomplete will be unavailable.');
-        }
-      })();
-    </script>
+    <!-- Google Maps API is loaded dynamically via LocationAutocomplete component -->
   </head>
   <body>
     <div id="root"></div>
